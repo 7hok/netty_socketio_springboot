@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="/js/jquery.min.js"></script>
+    <script src="/js/socket.io.js"></script>
+</head>
+<body>
+    <h1>Welcome To Our Page</h1>
+    <form action="">
+        <input type="text" id="ipdata">
+        <button type="submit">click me</button>
+    </form>
+
+    <div id="chathistory">
+
+    </div>
+ 
+    <script >
+        var socket = io.connect('http://localhost:5657/')
+        socket.on('connect',function(){
+            console.log(`connected aiii`);
+            socket.emit('runon','hahahaha run on test'); 
+        })
+
+        $('form').submit(function(event){
+            event.preventDefault();
+            console.log(`hahahaha click aii`);
+            socket.emit('new post',$('#ipdata').val());
+        })
+
+        socket.on('getPosting',function(data) {
+            console.log(data);
+            $("#chathistory").append(`<p>USER : ${data}</p>`)
+        })
+
+        socket.on('runon',function(data){
+            alert(data)
+        })
+    </script>
+</body>
+</html>

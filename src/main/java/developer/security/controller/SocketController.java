@@ -3,6 +3,7 @@ package developer.security.controller;
 import com.corundumstudio.socketio.AckRequest;
 import com.corundumstudio.socketio.SocketIOClient;
 import com.corundumstudio.socketio.SocketIOServer;
+import com.corundumstudio.socketio.annotation.OnEvent;
 import com.corundumstudio.socketio.listener.ConnectListener;
 import com.corundumstudio.socketio.listener.DataListener;
 import com.corundumstudio.socketio.listener.DisconnectListener;
@@ -32,7 +33,7 @@ public class SocketController {
 
         });
 
-        this.socketIOServer.addDisconnectListener(new DisconnectListener() {
+        this.socketIOServer.addDisconnectListener(new DisconnectListener() {    
 
             @Override
             public void onDisconnect(SocketIOClient client) {
@@ -47,9 +48,13 @@ public class SocketController {
 
             @Override
             public void onData(SocketIOClient client, String data, AckRequest askSender) throws Exception {
-                System.out.println("");
+                
+                System.out.println("Server side data " + data);
+                
+                socketIOServer.getBroadcastOperations().sendEvent("getPosting", data);
             }
             
         });
     }
+    
 }
